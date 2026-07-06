@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TWD | Websites for Local Businesses</title>
+<meta name="description" content="Custom-built websites for local businesses across the West Midlands. Real live examples, clear pricing, no templates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --disp:'Space Grotesk',sans-serif;
+    --mono:'IBM Plex Mono',monospace;
+    --radius:16px;
+    --radius-sm:12px;
+    --ease:cubic-bezier(0.16,1,0.3,1);
+    --glow:rgba(88,120,255,0.35);
+  }
+  :root[data-mode="light"]{
+    --bg:#f6f7f9; --bg-alt:#eef0f4; --surface:#ffffff;
+    --ink:#0d1015; --ink-soft:#5c6470;
+    --deep:#0c0e13; --deep-mid:#191c24;
+    --accent:#4f6bff; --accent-light:#7d92ff;
+    --cta:#4f6bff; --cta-hover:#3d59f0;
+    --line:#e5e8ee;
+  }
+  :root[data-mode="dark"]{
+    --bg:#0b0d12; --bg-alt:#12151c; --surface:#14171f;
+    --ink:#eef1f6; --ink-soft:#9aa2b1;
+    --deep:#07080c; --deep-mid:#191c24;
+    --accent:#6d86ff; --accent-light:#96a8ff;
+    --cta:#5872ff; --cta-hover:#6d86ff;
+    --line:rgba(255,255,255,0.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:-0.01em;transition:background 0.4s var(--ease),color 0.4s var(--ease);}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  ::selection{background:var(--accent);color:#fff;}
+
+  /* blueprint texture strip used behind a few sections */
+  .blueprint-bg{
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 34px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 34px);
+  }
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;padding-left:40px;padding-right:40px;height:76px;display:flex;align-items:center;justify-content:space-between;background:transparent;backdrop-filter:blur(0px);transition:background 0.4s var(--ease),backdrop-filter 0.4s var(--ease),box-shadow 0.4s var(--ease),border-color 0.4s var(--ease);border-bottom:1px solid transparent;}
+  nav.scrolled{background:rgba(9,11,16,0.72);backdrop-filter:blur(16px) saturate(160%);box-shadow:0 8px 40px rgba(0,0,0,0.24);border-bottom:1px solid rgba(255,255,255,0.06);}
+  .nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0;}
+  .nav-logo img{height:38px;width:auto;display:block;transition:transform 0.35s var(--ease),filter 0.35s var(--ease);filter:drop-shadow(0 2px 10px rgba(0,0,0,0.35));}
+  .nav-logo:hover img{transform:translateY(-2px);filter:drop-shadow(0 6px 16px rgba(0,0,0,0.45));}
+  .nav-right{display:flex;align-items:center;gap:28px;}
+  .nav-links{display:flex;gap:26px;list-style:none;}
+  .nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:13px;font-weight:500;letter-spacing:0.2px;transition:color 0.25s var(--ease);position:relative;}
+  .nav-links a::after{content:'';position:absolute;left:0;bottom:-5px;width:0;height:1.5px;background:var(--accent-light);transition:width 0.3s var(--ease);}
+  .nav-links a:hover{color:#fff;}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{background:rgba(255,255,255,0.08);color:#fff!important;padding-top:9px;padding-bottom:9px;padding-left:18px;padding-right:18px;border:1px solid rgba(255,255,255,0.16);border-radius:100px;font-family:var(--mono);font-weight:500;font-size:13px;text-decoration:none;display:inline-block;transition:background 0.25s var(--ease),border-color 0.25s var(--ease),transform 0.25s var(--ease);}
+  .nav-cta:hover{background:var(--cta);border-color:var(--cta);transform:translateY(-1px);}
+
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;z-index:210;}
+  .burger span{width:24px;height:2px;background:#fff;display:block;transition:transform 0.3s,opacity 0.3s;}
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .burger.open span:nth-child(2){opacity:0;}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .mobile-panel{position:fixed;top:76px;left:0;right:0;background:rgba(9,11,16,0.92);backdrop-filter:blur(18px) saturate(160%);border-bottom:1px solid rgba(255,255,255,0.08);z-index:199;display:flex;flex-direction:column;padding:10px 24px 26px;gap:2px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity 0.3s var(--ease),transform 0.3s var(--ease);}
+  .mobile-panel.open{transform:translateY(0);opacity:1;pointer-events:auto;}
+  .mobile-panel a{color:rgba(255,255,255,0.88);text-decoration:none;font-size:15px;padding-top:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.09);}
+  .mobile-panel a.mob-cta{color:var(--accent-light);font-weight:600;}
+  .mode-toggle{display:inline-flex;align-items:center;gap:0;background:none;border:none;cursor:pointer;padding:0;flex-shrink:0;}
+  .mode-track{width:40px;height:22px;border-radius:12px;background:rgba(255,255,255,0.18);position:relative;transition:background 0.25s;display:block;}
+  :root[data-mode="light"] nav .mode-track{background:rgba(255,255,255,0.22);}
+  .mode-thumb{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform 0.25s ease;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
+  :root[data-mode="dark"] .mode-thumb{transform:translateX(18px);background:var(--accent-light);}
+  .mode-toggle-mobile{width:100%;justify-content:flex-start;gap:12px;padding-top:16px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.09);}
+  .mode-toggle-label{color:rgba(255,255,255,0.75);font-size:14px;}
+
+  /* HERO */
+  .hero{position:relative;background:var(--deep);color:#fff;padding-top:172px;padding-bottom:110px;padding-left:40px;padding-right:40px;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.022) 0px, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 44px),repeating-linear-gradient(90deg, rgba(255,255,255,0.022) 0px, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 44px);pointer-events:none;mask-image:radial-gradient(120% 90% at 70% 0%,#000 0%,transparent 75%);}
+  .hero::after{content:'';position:absolute;top:-30%;left:38%;width:900px;height:900px;background:radial-gradient(circle,rgba(80,107,255,0.28) 0%,rgba(80,107,255,0.08) 32%,transparent 62%);pointer-events:none;filter:blur(10px);}
+  .hero-inner{position:relative;max-width:1180px;margin:0 auto;z-index:2;}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent-light);margin-bottom:26px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:8px 16px 8px 14px;border-radius:100px;backdrop-filter:blur(6px);}
+  .hero-eyebrow::before{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--accent-light);box-shadow:0 0 10px var(--accent-light);}
+  .hero h1{font-family:var(--disp);font-size:clamp(40px,6vw,76px);font-weight:700;line-height:1.04;letter-spacing:-0.025em;margin-bottom:26px;max-width:860px;}
+  .hero h1 span{background:linear-gradient(120deg,var(--accent-light),#b8c4ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-sub{font-size:18px;font-weight:300;color:rgba(255,255,255,0.66);line-height:1.7;max-width:600px;margin-bottom:40px;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:60px;}
+  .btn-accent{background:var(--cta);color:#fff;padding-top:16px;padding-bottom:16px;padding-left:32px;padding-right:32px;border-radius:100px;text-decoration:none;font-size:14.5px;font-weight:600;letter-spacing:0.1px;transition:background 0.3s var(--ease),transform 0.3s var(--ease),box-shadow 0.3s var(--ease);display:inline-block;box-shadow:0 8px 24px var(--glow);}
+  .btn-accent:hover{background:var(--cta-hover);transform:translateY(-3px);box-shadow:0 14px 34px var(--glow);}
+  .btn-ghost{border:1px solid rgba(255,255,255,0.2);color:#fff;padding-top:16px;padding-bottom:16px;padding-left:32px;padding-right:32px;border-radius:100px;text-decoration:none;font-size:14.5px;font-weight:500;transition:border-color 0.3s var(--ease),background 0.3s var(--ease),transform 0.3s var(--ease);display:inline-block;backdrop-filter:blur(6px);}
+  .btn-ghost:hover{border-color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.06);transform:translateY(-3px);}
+  .hero-facts{display:flex;gap:56px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.1);padding-top:34px;}
+  .hfact-num{font-family:var(--disp);font-size:34px;font-weight:700;color:#fff;line-height:1;letter-spacing:-0.02em;}
+  .hfact-label{font-size:13px;color:rgba(255,255,255,0.48);font-weight:300;margin-top:6px;}
+
+  /* SECTION BASE */
+  .section{padding-top:120px;padding-bottom:120px;padding-left:40px;padding-right:40px;}
+  .section-inner{max-width:1180px;margin:0 auto;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);margin-bottom:18px;}
+  .eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--accent);}
+  .section-h{font-family:var(--disp);font-size:clamp(30px,3.8vw,48px);font-weight:700;line-height:1.1;letter-spacing:-0.025em;color:var(--ink);margin-bottom:18px;}
+  .section-p{font-size:16.5px;font-weight:300;color:var(--ink-soft);line-height:1.75;max-width:560px;}
+
+  /* PORTFOLIO */
+  .portfolio{background:var(--bg-alt);}
+  :root[data-mode="dark"] .portfolio{background:var(--bg);}
+  .portfolio-head{margin-bottom:60px;}
+  .port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .port-card{position:relative;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;text-decoration:none;color:var(--ink);transition:transform 0.45s var(--ease),box-shadow 0.45s var(--ease),border-color 0.45s var(--ease);display:flex;flex-direction:column;background:var(--surface);box-shadow:0 1px 2px rgba(15,20,35,0.04);}
+  .port-card:hover{transform:translateY(-8px);box-shadow:0 26px 50px -12px rgba(20,30,60,0.22),0 0 0 1px var(--accent);border-color:transparent;}
+  .port-card:active{transform:translateY(-2px) scale(0.99);box-shadow:0 10px 24px rgba(20,30,45,0.16);transition:transform 0.1s ease,box-shadow 0.1s ease;}
+  .port-shot{position:relative;aspect-ratio:2 / 1;overflow:hidden;background:var(--bg-alt);border-bottom:1px solid var(--line);}
+  .port-shot img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform 0.6s var(--ease);}
+  .port-shot::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(79,107,255,0.14) 100%);opacity:0;transition:opacity 0.45s var(--ease);}
+  .port-card:hover .port-shot img{transform:scale(1.06);}
+  .port-card:hover .port-shot::after{opacity:1;}
+  .port-body{padding-top:22px;padding-bottom:24px;padding-left:24px;padding-right:24px;display:flex;flex-direction:column;gap:11px;flex:1;}
+  .port-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);align-self:flex-start;background:color-mix(in srgb,var(--accent) 10%,transparent);padding:5px 10px;border-radius:100px;}
+  .port-name{font-family:var(--disp);font-size:19px;font-weight:600;line-height:1.2;letter-spacing:-0.015em;}
+  .port-desc{font-size:13.5px;font-weight:300;line-height:1.6;color:var(--ink-soft);flex:1;}
+  .port-desc .ctx{display:block;margin-top:6px;color:var(--ink-soft);opacity:0.7;font-size:12.5px;}
+  .port-link{font-family:var(--mono);font-size:12.5px;font-weight:500;color:var(--cta);display:flex;align-items:center;gap:6px;margin-top:5px;transition:gap 0.3s var(--ease);}
+  .port-card:hover .port-link{gap:10px;}
+
+  /* COMPARISON */
+  .compare{background:var(--bg);}
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:56px;}
+  .compare-col{border-radius:var(--radius);padding-top:36px;padding-bottom:36px;padding-left:36px;padding-right:36px;transition:transform 0.4s var(--ease);}
+  .compare-col.bad{background:var(--surface);border:1px solid var(--line);}
+  .compare-col.good{background:var(--deep);color:#fff;position:relative;overflow:hidden;box-shadow:0 20px 50px -18px var(--glow);}
+  .compare-col.good::before{content:'';position:absolute;top:-40%;right:-20%;width:340px;height:340px;background:radial-gradient(circle,rgba(79,107,255,0.35),transparent 65%);pointer-events:none;}
+  .compare-col h3{font-family:var(--disp);font-size:21px;font-weight:600;letter-spacing:-0.015em;margin-bottom:22px;position:relative;z-index:2;}
+  .compare-col.good .compare-list{position:relative;z-index:2;}
+  .compare-col.bad h3{color:var(--ink);}
+  .compare-col.good h3{color:#fff;}
+  .compare-list{display:flex;flex-direction:column;gap:14px;}
+  .compare-item{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.55;}
+  .compare-item .mark{font-family:var(--mono);font-weight:700;flex-shrink:0;width:18px;}
+  .compare-col.bad .mark{color:#e05656;}
+  .compare-col.good .mark{color:var(--accent-light);}
+  .compare-col.bad .compare-item{color:var(--ink-soft);}
+  .compare-col.good .compare-item{color:rgba(255,255,255,0.82);}
+
+  /* PROCESS */
+  .process{background:var(--bg-alt);}
+  :root[data-mode="dark"] .process{background:var(--bg);}
+  .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:60px;}
+  .proc-step{position:relative;padding-top:28px;padding-bottom:28px;padding-left:26px;padding-right:26px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);transition:transform 0.4s var(--ease),box-shadow 0.4s var(--ease),border-color 0.4s var(--ease);}
+  .proc-step:hover{transform:translateY(-6px);box-shadow:0 22px 44px -16px rgba(20,30,60,0.2);border-color:var(--accent);}
+  .proc-step:active{transform:translateY(-2px) scale(0.985);transition:transform 0.1s ease;}
+  .proc-num{font-family:var(--disp);font-size:15px;font-weight:600;color:var(--accent);line-height:1;margin-bottom:44px;letter-spacing:1px;}
+  .proc-step h4{font-family:var(--disp);font-size:17px;font-weight:600;letter-spacing:-0.01em;color:var(--ink);margin-bottom:9px;}
+  .proc-step p{font-size:13.5px;font-weight:300;color:var(--ink-soft);line-height:1.6;}
+
+  /* PRICING */
+  .pricing{background:var(--deep);color:#fff;position:relative;overflow:hidden;}
+  .pricing::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse at top,rgba(79,107,255,0.16),transparent 70%);pointer-events:none;}
+  .pricing .section-inner{position:relative;z-index:2;}
+  .pricing .eyebrow{color:var(--accent-light);}
+  .pricing .eyebrow::before{background:var(--accent-light);}
+  .pricing .section-h{color:#fff;}
+  .pricing .section-p{color:rgba(255,255,255,0.62);}
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:60px;}
+  .price-card{background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.09);border-radius:var(--radius);padding-top:34px;padding-bottom:34px;padding-left:30px;padding-right:30px;display:flex;flex-direction:column;transition:transform 0.4s var(--ease),box-shadow 0.4s var(--ease),border-color 0.4s var(--ease),background 0.4s var(--ease);backdrop-filter:blur(8px);}
+  .price-card:hover{transform:translateY(-6px);background:rgba(255,255,255,0.055);box-shadow:0 24px 50px -16px rgba(0,0,0,0.4),0 0 40px -8px var(--glow);border-color:var(--accent);}
+  .price-card:active{transform:translateY(-2px) scale(0.985);transition:transform 0.1s ease;}
+  a.price-card{text-decoration:none;color:inherit;cursor:pointer;}
+  .price-choose{font-family:var(--mono);font-size:12.5px;font-weight:500;color:var(--accent-light);margin-top:20px;display:flex;align-items:center;gap:6px;opacity:0.75;transition:gap 0.3s var(--ease),opacity 0.3s var(--ease);}
+  a.price-card:hover .price-choose{gap:10px;opacity:1;}
+  .price-plan{font-family:var(--mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-light);margin-bottom:14px;}
+  .price-num{font-family:var(--disp);font-size:38px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px;letter-spacing:-0.02em;}
+  .price-num small{font-family:var(--mono);font-size:14px;font-weight:400;color:rgba(255,255,255,0.55);}
+  .price-detail{font-size:13px;color:rgba(255,255,255,0.55);font-weight:300;margin-bottom:22px;}
+  .price-then{border-top:1px solid rgba(255,255,255,0.12);padding-top:18px;margin-top:auto;}
+  .price-then-label{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.42);margin-bottom:6px;}
+  .price-then-val{font-family:var(--mono);font-size:15px;color:rgba(255,255,255,0.85);}
+  .price-footnote{margin-top:36px;font-size:13.5px;color:rgba(255,255,255,0.5);font-weight:300;line-height:1.7;max-width:720px;}
+  .price-footnote strong{color:rgba(255,255,255,0.75);font-weight:500;}
+
+  /* INCLUDED */
+  .included{background:var(--surface);}
+  :root[data-mode="dark"] .included{background:var(--bg-alt);}
+  .included-list{display:grid;grid-template-columns:1fr 1fr;gap:16px 32px;margin-top:52px;}
+  .inc-item{display:flex;gap:14px;align-items:flex-start;font-size:15px;color:var(--ink-soft);line-height:1.55;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 20px;transition:border-color 0.35s var(--ease),transform 0.35s var(--ease);}
+  :root[data-mode="dark"] .inc-item{background:var(--surface);}
+  .inc-item:hover{border-color:var(--accent);transform:translateY(-2px);}
+  .inc-item .mark{font-family:var(--mono);color:var(--accent);font-weight:700;flex-shrink:0;}
+
+  /* FAQ */
+  .faq{background:var(--bg);}
+  .faq-list{margin-top:52px;display:flex;flex-direction:column;}
+  .faq-item{border-bottom:1px solid var(--line);padding-top:26px;padding-bottom:26px;transition:padding-left 0.35s var(--ease);}
+  .faq-item:hover{padding-left:8px;}
+  .faq-item h4{font-family:var(--disp);font-size:17px;font-weight:600;letter-spacing:-0.01em;color:var(--ink);margin-bottom:9px;}
+  .faq-item p{font-size:14.5px;color:var(--ink-soft);font-weight:300;line-height:1.65;max-width:640px;}
+
+  /* CONTACT */
+  .contact{background:var(--deep);color:#fff;position:relative;overflow:hidden;}
+  .contact::after{content:'';position:absolute;bottom:-20%;right:-5%;width:600px;height:600px;background:radial-gradient(circle,rgba(79,107,255,0.14),transparent 65%);pointer-events:none;}
+  .contact .section-inner{position:relative;z-index:2;}
+  .contact .eyebrow{color:var(--accent-light);}
+  .contact .eyebrow::before{background:var(--accent-light);}
+  .contact .section-h{color:#fff;}
+  .contact .section-p{color:rgba(255,255,255,0.6);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:52px;}
+  .contact-opts{display:flex;flex-direction:column;gap:14px;}
+  .contact-opt{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:var(--radius-sm);padding-top:20px;padding-bottom:20px;padding-left:22px;padding-right:22px;text-decoration:none;color:#fff;transition:background 0.3s var(--ease),border-color 0.3s var(--ease),transform 0.3s var(--ease);backdrop-filter:blur(6px);}
+  .contact-opt:hover{background:rgba(79,107,255,0.12);border-color:rgba(120,146,255,0.45);transform:translateY(-2px);}
+  .contact-opt-icon{font-size:20px;flex-shrink:0;}
+  .contact-opt strong{display:block;font-family:var(--mono);font-size:15px;font-weight:500;}
+  .contact-opt small{font-size:12px;color:rgba(255,255,255,0.42);font-weight:300;}
+  .contact-form{background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.09);border-radius:var(--radius);padding-top:34px;padding-bottom:34px;padding-left:32px;padding-right:32px;backdrop-filter:blur(10px);box-shadow:0 24px 60px -24px rgba(0,0,0,0.5);}
+  .contact-form h3{font-family:var(--disp);font-size:21px;font-weight:600;letter-spacing:-0.015em;color:#fff;margin-bottom:20px;}
+  .contact-wa{background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.09);border-radius:var(--radius);padding-top:38px;padding-bottom:38px;padding-left:34px;padding-right:34px;backdrop-filter:blur(10px);box-shadow:0 24px 60px -24px rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:flex-start;}
+  .contact-wa h3{font-family:var(--disp);font-size:22px;font-weight:600;letter-spacing:-0.015em;color:#fff;margin-bottom:14px;}
+  .contact-wa-p{font-size:15px;font-weight:300;color:rgba(255,255,255,0.62);line-height:1.7;margin-bottom:28px;}
+  .wa-btn{display:inline-flex;align-items:center;gap:12px;background:#25D366;color:#0a1f13;font-size:15.5px;font-weight:700;letter-spacing:0.1px;text-decoration:none;padding-top:16px;padding-bottom:16px;padding-left:26px;padding-right:28px;border-radius:100px;transition:transform 0.3s var(--ease),box-shadow 0.3s var(--ease),background 0.3s var(--ease);box-shadow:0 10px 28px rgba(37,211,102,0.32);}
+  .wa-btn:hover{background:#1fbe5a;transform:translateY(-3px);box-shadow:0 16px 38px rgba(37,211,102,0.42);}
+  .wa-btn:active{transform:translateY(-1px);}
+  .wa-icon{width:24px;height:24px;flex-shrink:0;}
+  .wa-note{font-family:var(--mono);font-size:12px;letter-spacing:0.4px;color:rgba(255,255,255,0.4);margin-top:18px;}
+  .form-row{margin-bottom:14px;}
+  .form-row label{display:block;font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:6px;}
+  .form-row input,.form-row select,.form-row textarea{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding-top:12px;padding-bottom:12px;padding-left:14px;padding-right:14px;color:#fff;font-size:14px;font-family:'Inter',sans-serif;transition:border-color 0.25s var(--ease),background 0.25s var(--ease),box-shadow 0.25s var(--ease);}
+  .form-row select option{color:#101820;}
+  .form-row input:focus,.form-row textarea:focus,.form-row select:focus{outline:none;border-color:var(--accent-light);background:rgba(255,255,255,0.1);box-shadow:0 0 0 3px rgba(120,146,255,0.18);}
+  .form-row textarea{resize:vertical;min-height:76px;}
+  .form-submit{background:var(--cta);color:#fff;border:none;padding-top:14px;padding-bottom:14px;padding-left:30px;padding-right:30px;border-radius:100px;font-size:14.5px;font-weight:600;cursor:pointer;transition:background 0.3s var(--ease),transform 0.3s var(--ease),box-shadow 0.3s var(--ease);margin-top:6px;box-shadow:0 8px 22px var(--glow);}
+  .form-submit:hover{background:var(--cta-hover);transform:translateY(-2px);box-shadow:0 12px 30px var(--glow);}
+  .form-submit:focus-visible,.burger:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent-light);outline-offset:2px;}
+  .form-success{display:none;color:var(--accent-light);font-size:14px;padding-top:14px;}
+  .form-success.show{display:block;}
+
+  /* FOOTER */
+  footer{background:var(--deep);padding-top:30px;padding-bottom:30px;padding-left:40px;padding-right:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;border-top:1px solid rgba(255,255,255,0.06);}
+  .footer-logo{display:flex;align-items:center;gap:10px;}
+  .footer-logo img{height:30px;width:auto;display:block;opacity:0.9;}
+  footer p{font-size:12px;color:rgba(255,255,255,0.22);}
+  .footer-links{display:flex;gap:22px;align-items:center;}
+  .footer-links a{font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;}
+  .footer-links a:hover{color:var(--accent-light);}
+  .footer-social{display:flex;gap:14px;align-items:center;padding-left:22px;margin-left:0;border-left:1px solid rgba(255,255,255,0.12);}
+  .footer-social a{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:0.5px;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.2s;}
+  .footer-social a:hover{color:var(--accent-light);}
+  .footer-social svg{width:15px;height:15px;flex-shrink:0;}
+
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease);}
+  .reveal.on{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}.port-card,.port-card:hover,.port-card:active,.proc-step,.proc-step:hover,.proc-step:active,.price-card,.price-card:hover,.price-card:active{transform:none;transition:box-shadow 0.2s ease;}}
+
+  /* RESPONSIVE */
+  @media(max-width:980px){
+    .port-grid{grid-template-columns:1fr 1fr;}
+    .compare-grid{grid-template-columns:1fr;}
+    .process-grid{grid-template-columns:1fr 1fr;}
+    .price-grid{grid-template-columns:1fr;}
+    .included-list{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;gap:40px;}
+  }
+  @media(max-width:760px){
+    nav{padding-left:20px;padding-right:20px;}
+    .nav-links{display:none;}
+    .nav-cta{display:none;}
+    .nav-right{gap:14px;}
+    .burger{display:flex;}
+    .hero{padding-top:120px;padding-bottom:64px;padding-left:20px;padding-right:20px;}
+    .section{padding-top:60px;padding-bottom:60px;padding-left:20px;padding-right:20px;}
+    .port-grid{grid-template-columns:1fr;}
+    .process-grid{grid-template-columns:1fr;}
+    footer{padding-left:20px;padding-right:20px;flex-direction:column;align-items:flex-start;}
+    .hero-facts{gap:28px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <img src="images/twd-logo.png" alt="TWD — Websites That Deliver" width="359" height="120">
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#work">The Work</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="tel:07865956409" class="nav-cta">07865 956409</a>
+    <button class="mode-toggle" id="modeToggle" aria-label="Switch to dark mode" aria-pressed="false">
+      <span class="mode-track"><span class="mode-thumb"></span></span>
+    </button>
+    <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobilePanel">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-panel" id="mobilePanel">
+  <a href="#work">The Work</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#process">Process</a>
+  <a href="#faq">FAQ</a>
+  <a href="tel:07865956409" class="mob-cta">Call 07865 956409</a>
+  <button class="mode-toggle mode-toggle-mobile" id="modeToggleMobile" aria-label="Switch to dark mode" aria-pressed="false">
+    <span class="mode-track"><span class="mode-thumb"></span></span>
+    <span class="mode-toggle-label">Dark mode</span>
+  </button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Websites for local businesses</div>
+    <h1>Your business deserves better than <span>a Facebook page.</span></h1>
+    <p class="hero-sub">I build fast, custom websites for local businesses across the West Midlands — no templates, no monthly surprises. Have a look at the live examples below, then see exactly what it costs.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-accent">See Pricing</a>
+      <a href="#work" class="btn-ghost">See The Work</a>
+    </div>
+    <div class="hero-facts reveal">
+      <div><div class="hfact-num">20+</div><div class="hfact-label">Custom sites built</div></div>
+      <div><div class="hfact-num">£950</div><div class="hfact-label">All-in, domain included</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="work" class="section portfolio">
+  <div class="section-inner">
+    <div class="portfolio-head reveal">
+      <div class="eyebrow">Real Sites, Live Right Now</div>
+      <h2 class="section-h">Not mockups.<br>Not templates.</h2>
+      <p class="section-p">Every card below is a live website, built for a real local business, doing a real job right now. Click through and have a look for yourself.</p>
+    </div>
+    <div class="port-grid">
+      <a href="https://hipkissbutchers.co.uk/" target="_blank" rel="noopener" class="port-card reveal">
+        <div class="port-shot"><img src="images/portfolio/hipkiss.jpg" alt="Hipkiss butcher's website homepage" loading="lazy" width="1200" height="600"></div>
+        <div class="port-body">
+          <span class="port-tag">Butcher &amp; Deli</span>
+          <div class="port-name">Hipkiss</div>
+          <div class="port-desc">Full-screen storefront hero, integrated menu and gallery, live on their own custom domain.<span class="ctx">Independent butcher, deli &amp; farm shop, Wolverhampton.</span></div>
+          <div class="port-link">View live site ↗</div>
+        </div>
+      </a>
+      <a href="https://t11mrp.github.io/JRP-Auto-Repairs-/" target="_blank" rel="noopener" class="port-card reveal">
+        <div class="port-shot"><img src="images/portfolio/jrpauto.jpg" alt="JRP Auto Repairs website homepage" loading="lazy" width="1200" height="600"></div>
+        <div class="port-body">
+          <span class="port-tag">Mobile Mechanic</span>
+          <div class="port-name">JRP Auto Repairs</div>
+          <div class="port-desc">Bold dark hero, click-to-call header and a quote request built into the page.<span class="ctx">Family-run mobile mechanic, Wolverhampton.</span></div>
+          <div class="port-link">View live site ↗</div>
+        </div>
+      </a>
+      <a href="https://t11mrp.github.io/JG-Heating-Plumbing/" target="_blank" rel="noopener" class="port-card reveal">
+        <div class="port-shot"><img src="images/portfolio/jgheating.jpg" alt="JG Heating &amp; Plumbing website homepage" loading="lazy" width="1200" height="600"></div>
+        <div class="port-body">
+          <span class="port-tag">Heating &amp; Plumbing</span>
+          <div class="port-name">JG Heating &amp; Plumbing</div>
+          <div class="port-desc">Dark, high-contrast layout with Gas Safe trust markers and one-tap calling up front.<span class="ctx">Gas Safe engineer, Shropshire &amp; Staffordshire.</span></div>
+          <div class="port-link">View live site ↗</div>
+        </div>
+      </a>
+      <a href="https://t11mrp.github.io/BradsPlumbing-/" target="_blank" rel="noopener" class="port-card reveal">
+        <div class="port-shot"><img src="images/portfolio/bradsplumbing.jpg" alt="Brad's Plumbing Services website homepage" loading="lazy" width="1200" height="600"></div>
+        <div class="port-body">
+          <span class="port-tag">Plumbing</span>
+          <div class="port-name">Brad's Plumbing Services</div>
+          <div class="port-desc">Clean split hero with real job photography and a live quote-request form wired in.<span class="ctx">Local plumber, Wolverhampton.</span></div>
+          <div class="port-link">View live site ↗</div>
+        </div>
+      </a>
+      <a href="https://t11mrp.github.io/Nice-and-Fresh/" target="_blank" rel="noopener" class="port-card reveal">
+        <div class="port-shot"><img src="images/portfolio/niceandfresh.jpg" alt="Nice &amp; Fresh greengrocer website homepage" loading="lazy" width="1200" height="600"></div>
+        <div class="port-body">
+          <span class="port-tag">Greengrocer</span>
+          <div class="port-name">Nice &amp; Fresh</div>
+          <div class="port-desc">Full-bleed storefront hero with switchable colour themes and a delivery-focused layout.<span class="ctx">Local greengrocer, Tettenhall Wood.</span></div>
+          <div class="port-link">View live site ↗</div>
+        </div>
+      </a>
+      <a href="https://t11mrp.github.io/s-c-painting-and-decorating/" target="_blank" rel="noopener" class="port-card reveal">
+        <div class="port-shot"><img src="images/portfolio/scpainting.jpg" alt="S C Painting &amp; Decorating website homepage" loading="lazy" width="1200" height="600"></div>
+        <div class="port-body">
+          <span class="port-tag">Painter &amp; Decorator</span>
+          <div class="port-name">S C Painting &amp; Decorating</div>
+          <div class="port-desc">Soft sage palette with a project showcase and credential badges built into the hero.<span class="ctx">City &amp; Guilds decorator, Wolverhampton.</span></div>
+          <div class="port-link">View live site ↗</div>
+        </div>
+      </a>
+      <a href="https://t11mrp.github.io/Chris-Cheek-Panelling-/" target="_blank" rel="noopener" class="port-card reveal">
+        <div class="port-shot"><img src="images/portfolio/chrischeek.jpg" alt="Chris Cheek Panelling website homepage" loading="lazy" width="1200" height="600"></div>
+        <div class="port-body">
+          <span class="port-tag">Wall Panelling</span>
+          <div class="port-name">Chris Cheek Panelling</div>
+          <div class="port-desc">Refined serif branding with a finished-work showcase and a full style guide on the page.<span class="ctx">Bespoke wall panelling, West Midlands.</span></div>
+          <div class="port-link">View live site ↗</div>
+        </div>
+      </a>
+      <a href="https://t11mrp.github.io/Cornerstone-Cleaning-Services/" target="_blank" rel="noopener" class="port-card reveal">
+        <div class="port-shot"><img src="images/portfolio/cornerstone.jpg" alt="Cornerstone Cleaning Services website homepage" loading="lazy" width="1200" height="600"></div>
+        <div class="port-body">
+          <span class="port-tag">Exterior Cleaning</span>
+          <div class="port-name">Cornerstone Cleaning Services</div>
+          <div class="port-desc">Split hero with real on-the-job photos and starting prices laid out up front.<span class="ctx">Roof, gutter &amp; fascia cleaning, Coventry.</span></div>
+          <div class="port-link">View live site ↗</div>
+        </div>
+      </a>
+      <a href="https://t11mrp.github.io/T-O-Painting-and-Decorating/" target="_blank" rel="noopener" class="port-card reveal">
+        <div class="port-shot"><img src="images/portfolio/tandopainting.jpg" alt="T&amp;O Painting &amp; Decorating website homepage" loading="lazy" width="1200" height="600"></div>
+        <div class="port-body">
+          <span class="port-tag">Painter &amp; Decorator</span>
+          <div class="port-name">T&amp;O Painting &amp; Decorating</div>
+          <div class="port-desc">Editorial serif hero with a floating stats card pulling in their real recommendations.<span class="ctx">Decorators, Stourbridge &amp; the West Midlands.</span></div>
+          <div class="port-link">View live site ↗</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="section compare">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow">The Real Difference</div>
+      <h2 class="section-h">A Facebook page isn't a website.</h2>
+      <p class="section-p">It's a fine place to post updates. It's not a place for someone to find you, trust you, and get in touch.</p>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-col bad reveal">
+        <h3>Just a Facebook page</h3>
+        <div class="compare-list">
+          <div class="compare-item"><span class="mark">×</span>Only found if someone's already searching Facebook, not Google</div>
+          <div class="compare-item"><span class="mark">×</span>Laid out however Facebook decides that week</div>
+          <div class="compare-item"><span class="mark">×</span>No proper way to take an enquiry except a DM</div>
+          <div class="compare-item"><span class="mark">×</span>Feed buried under ads and other pages</div>
+          <div class="compare-item"><span class="mark">×</span>Looks the same as every hobby page and marketplace listing</div>
+        </div>
+      </div>
+      <div class="compare-col good reveal">
+        <h3>A site built for your business</h3>
+        <div class="compare-list">
+          <div class="compare-item"><span class="mark">✓</span>Findable on Google, with your own address on the web</div>
+          <div class="compare-item"><span class="mark">✓</span>Built around your business, your services, your photos</div>
+          <div class="compare-item"><span class="mark">✓</span>A real enquiry form that lands wherever you want it to</div>
+          <div class="compare-item"><span class="mark">✓</span>Nothing to scroll past — just your business</div>
+          <div class="compare-item"><span class="mark">✓</span>Looks like what it is — a proper, established business</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" class="section process">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow">How It Works</div>
+      <h2 class="section-h">From a phone call to live on Google.</h2>
+    </div>
+    <div class="process-grid">
+      <div class="proc-step reveal">
+        <div class="proc-num">01</div>
+        <h4>Get in touch</h4>
+        <p>Call, text or send a message. Tell me a bit about the business and what you want people to see.</p>
+      </div>
+      <div class="proc-step reveal">
+        <div class="proc-num">02</div>
+        <h4>I build it</h4>
+        <p>A custom site built around your real photos, services and details — no stock templates.</p>
+      </div>
+      <div class="proc-step reveal">
+        <div class="proc-num">03</div>
+        <h4>You review it</h4>
+        <p>See it live before anything's paid for. Ask for changes, or say you're happy.</p>
+      </div>
+      <div class="proc-step reveal">
+        <div class="proc-num">04</div>
+        <h4>It goes live</h4>
+        <p>Domain sorted, site hosted, and you're findable — with ongoing hosting and minor updates after.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="section pricing blueprint-bg">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow">Clear Pricing, No Surprises</div>
+      <h2 class="section-h">Three ways to pay. No hidden extras.</h2>
+      <p class="section-p">Every plan below gets you the exact same build — a custom site, hosted, with a working contact form and your domain included. Paying over time costs a bit more overall, same as any payment plan; here's the real total for each.</p>
+    </div>
+    <div class="price-grid">
+      <a href="#contact" class="price-card reveal" data-plan="Pay in full - £950">
+        <div class="price-plan">Pay In Full</div>
+        <div class="price-num">£950</div>
+        <div class="price-detail">One-off. Includes domain registration, up to £50.</div>
+        <div class="price-then">
+          <div class="price-then-label">Then, from month 2</div>
+          <div class="price-then-val">£35/month — hosting &amp; minor updates</div>
+        </div>
+        <span class="price-choose">Choose this plan →</span>
+      </a>
+      <a href="#contact" class="price-card mid reveal" data-plan="Split in two - £550 x2">
+        <div class="price-plan">Split In Two</div>
+        <div class="price-num">£550<small> + £550</small></div>
+        <div class="price-detail">Today, then again next month. £1,100 total for the build.</div>
+        <div class="price-then">
+          <div class="price-then-label">Then, from month 3</div>
+          <div class="price-then-val">£35/month — hosting &amp; minor updates</div>
+        </div>
+        <span class="price-choose">Choose this plan →</span>
+      </a>
+      <a href="#contact" class="price-card reveal" data-plan="12 months - £135/mo">
+        <div class="price-plan">Spread Over 12 Months</div>
+        <div class="price-num">£135<small>/month</small></div>
+        <div class="price-detail">£100 toward the build + £35 hosting, bundled from day one — £1,200 total for the build over the year.</div>
+        <div class="price-then">
+          <div class="price-then-label">Then, after month 12</div>
+          <div class="price-then-val">£35/month — hosting &amp; minor updates</div>
+        </div>
+        <span class="price-choose">Choose this plan →</span>
+      </a>
+    </div>
+    <p class="price-footnote reveal">
+      <strong>What "minor updates" means:</strong> small text and image changes, swapping a photo, updating a price or opening hours. Bigger changes — new pages, a redesign, added features — are quoted separately, just ask.
+      <br><br>
+      <strong>Payment:</strong> cash, bank transfer, or however's easiest for you.
+    </p>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section class="section included">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow">Every Build Includes</div>
+      <h2 class="section-h">The same solid foundation, every time.</h2>
+    </div>
+    <div class="included-list">
+      <div class="inc-item"><span class="mark">＋</span>A custom-built site around your business, not a template</div>
+      <div class="inc-item"><span class="mark">＋</span>Fully responsive — looks right on a phone, tablet or desktop</div>
+      <div class="inc-item"><span class="mark">＋</span>A working contact / enquiry form</div>
+      <div class="inc-item"><span class="mark">＋</span>Hosting sorted, no separate hosting company to deal with</div>
+      <div class="inc-item"><span class="mark">＋</span>Domain registration included, up to £50</div>
+      <div class="inc-item"><span class="mark">＋</span>Built around your real photos and services — no stock content</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section faq">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow">Questions</div>
+      <h2 class="section-h">Before you get in touch.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <h4>Is the website mine?</h4>
+        <p>Yes — it's built for your business. The £35/month keeps it hosted, secure and lightly maintained; the site itself is yours.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What if I need more than a minor update?</h4>
+        <p>New pages, a bigger redesign, or added features (like online booking) are quoted separately — just message me and I'll give you a price.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I use a domain I already own?</h4>
+        <p>Yes. If you've already got one, that's fine — the domain allowance just isn't needed in that case.</p>
+      </div>
+      <div class="faq-item">
+        <h4>How long does it take?</h4>
+        <p>Usually just a matter of days once we've had a chat about the business and I've got a few photos to work with.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section contact blueprint-bg">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow">Get In Touch</div>
+      <h2 class="section-h">Let's get your business online properly.</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-opts reveal">
+        <a href="tel:07865956409" class="contact-opt">
+          <span class="contact-opt-icon">📞</span>
+          <div><strong>07865 956409</strong><small>Call or text</small></div>
+        </a>
+        <a href="mailto:t11mrp@hotmail.com" class="contact-opt">
+          <span class="contact-opt-icon">✉️</span>
+          <div><strong>t11mrp@hotmail.com</strong><small>Send an email</small></div>
+        </a>
+      </div>
+      <div class="contact-wa reveal">
+        <h3>Message me on WhatsApp</h3>
+        <p class="contact-wa-p">Quickest way to reach me. Tap the button and WhatsApp opens with a short message ready to go — just fill in your details and hit send.</p>
+        <a href="#" class="wa-btn" id="waButton" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.004 3C9.383 3 4 8.383 4 15.004c0 2.118.554 4.186 1.607 6.008L4 29l8.184-1.573A11.94 11.94 0 0 0 16.004 27C22.625 27 28 21.617 28 15.004 28 8.383 22.625 3 16.004 3zm0 21.6a9.56 9.56 0 0 1-4.87-1.333l-.35-.208-4.856.933.923-4.735-.228-.364a9.548 9.548 0 0 1-1.463-5.089c0-5.293 4.31-9.6 9.606-9.6 5.29 0 9.596 4.307 9.596 9.601 0 5.293-4.306 9.6-9.586 9.6zm5.27-7.19c-.288-.144-1.708-.842-1.972-.938-.264-.096-.456-.144-.648.144-.192.288-.744.938-.912 1.13-.168.192-.336.216-.624.072-.288-.144-1.216-.448-2.316-1.428-.856-.764-1.434-1.708-1.602-1.996-.168-.288-.018-.444.126-.588.13-.13.288-.336.432-.504.144-.168.192-.288.288-.48.096-.192.048-.36-.024-.504-.072-.144-.648-1.564-.888-2.14-.234-.562-.472-.486-.648-.494l-.552-.01c-.192 0-.504.072-.768.36-.264.288-1.008.985-1.008 2.405 0 1.42 1.032 2.79 1.176 2.982.144.192 2.03 3.1 4.92 4.347.688.297 1.224.474 1.642.607.69.219 1.318.188 1.814.114.554-.083 1.708-.698 1.948-1.372.24-.674.24-1.252.168-1.372-.072-.12-.264-.192-.552-.336z"/></svg>
+          Message me on WhatsApp
+        </a>
+        <span class="wa-note">Opens in WhatsApp · 07865 956409</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><img src="images/twd-logo.png" alt="TWD — Websites That Deliver" width="359" height="120"></div>
+  <p>&copy; 2026 TWD · Websites for local businesses, West Midlands</p>
+  <div class="footer-links">
+    <a href="tel:07865956409">07865 956409</a>
+    <a href="mailto:t11mrp@hotmail.com">t11mrp@hotmail.com</a>
+    <span class="footer-social">
+      <a href="https://www.instagram.com/tiimrobbiins/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+        Instagram
+      </a>
+      <a href="https://www.facebook.com/tim.robbins.7" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg>
+        Facebook
+      </a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  function updateNavScroll(){ nav.classList.toggle('scrolled', window.scrollY > 40); }
+  window.addEventListener('scroll', updateNavScroll);
+  updateNavScroll();
+
+  // ===== LIGHT / DARK MODE TOGGLE =====
+  const MODE_KEY = 'twd-mode';
+  const htmlEl = document.documentElement;
+  const modeToggle = document.getElementById('modeToggle');
+  const modeToggleMobile = document.getElementById('modeToggleMobile');
+
+  function applyMode(mode, persist){
+    htmlEl.setAttribute('data-mode', mode);
+    const isDark = mode === 'dark';
+    [modeToggle, modeToggleMobile].forEach(btn => {
+      if(!btn) return;
+      btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+      btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    });
+    if(persist){
+      try{ localStorage.setItem(MODE_KEY, mode); }catch(e){}
+    }
+  }
+
+  function toggleMode(){
+    const current = htmlEl.getAttribute('data-mode') === 'dark' ? 'dark' : 'light';
+    applyMode(current === 'dark' ? 'light' : 'dark', true);
+  }
+
+  if(modeToggle) modeToggle.addEventListener('click', toggleMode);
+  if(modeToggleMobile) modeToggleMobile.addEventListener('click', toggleMode);
+
+  (function initMode(){
+    let saved = null;
+    try{ saved = localStorage.getItem(MODE_KEY); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){
+      applyMode(saved, false);
+    } else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+      applyMode('dark', false);
+    }
+  })();
+
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobilePanel = document.getElementById('mobilePanel');
+
+  function closeMobilePanel(){
+    burgerBtn.classList.remove('open');
+    burgerBtn.setAttribute('aria-expanded', 'false');
+    mobilePanel.classList.remove('open');
+  }
+
+  burgerBtn.addEventListener('click', () => {
+    const isOpen = mobilePanel.classList.toggle('open');
+    burgerBtn.classList.toggle('open', isOpen);
+    burgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  mobilePanel.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMobilePanel);
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if(prefersReducedMotion){
+    reveals.forEach(el => el.classList.add('on'));
+  } else {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          const parent = entry.target.closest('.section-inner,.section') || document.body;
+          const siblings = [...parent.querySelectorAll('.reveal:not(.on)')];
+          const idx = siblings.indexOf(entry.target);
+          setTimeout(() => entry.target.classList.add('on'), Math.min(idx,4)*90);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.1});
+    reveals.forEach(el => obs.observe(el));
+  }
+
+  // ===== WHATSAPP CONTACT =====
+  // Number in international format: no +, no leading 0, no spaces.
+  const WA_NUMBER = "447865956409";
+
+  // Base message template. {PLAN} is swapped for the chosen plan, or a neutral line.
+  function buildWaMessage(plan){
+    const planLine = plan
+      ? "Preferred plan: " + plan
+      : "Preferred plan (if any): ";
+    return [
+      "Hi Tim, I saw your TWD website and I'm interested in a site for my business.",
+      "",
+      "Business name: ",
+      "What I do: ",
+      planLine,
+      "Best way to reach me: "
+    ].join("\n");
+  }
+
+  function waLink(plan){
+    return "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(buildWaMessage(plan));
+  }
+
+  // Main WhatsApp button in the contact section (no specific plan)
+  const waButton = document.getElementById('waButton');
+  if(waButton){
+    waButton.href = waLink(null);
+  }
+
+  // ===== PRICING CARD → OPEN WHATSAPP WITH CHOSEN PLAN =====
+  document.querySelectorAll('.price-card[data-plan]').forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault(); // override the #contact anchor; go straight to WhatsApp
+      const plan = card.getAttribute('data-plan');
+      window.open(waLink(plan), '_blank', 'noopener');
+    });
+  });
+</script>
+</body>
+</html>
